@@ -1,9 +1,9 @@
-FROM golang:latest as builder
+FROM golang:alpine as builder
 
-WORKDIR $GOPATH/src/project.com/me
+WORKDIR $GOPATH/src/github.com/mraxus/mystery-golang-alpine
 
 # Install musl so that we can build a static binary
-RUN apt-get -q update && apt-get -qy install musl musl-dev musl-tools
+RUN apk -f update && apk -q -f add musl musl-dev musl-tools git gcc
 COPY . ./
 RUN go get
 
