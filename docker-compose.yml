@@ -1,0 +1,22 @@
+postgres:
+    image: postgres:latest
+    ports:
+        - "5432"
+#postgres:
+#    image: mdillon/postgis:9.6
+#    ports:
+#        - "5432"
+
+build:
+    image: mamarcus.org/project:build
+    links:
+        - postgres
+    environment:
+        DB: "postgres://postgres@postgres/postgres?sslmode=disable"
+
+alpine:
+    image: mamarcus.org/project:alpine
+    links:
+        - postgres
+    environment:
+        DB: "postgres://postgres@postgres/postgres?sslmode=disable"

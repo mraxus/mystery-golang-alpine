@@ -1,0 +1,17 @@
+FROM golang:latest as builder
+
+WORKDIR $GOPATH/src/project.com/me
+
+# Install musl so that we can build a static binary
+RUN apt-get -q update && apt-get -qy install musl musl-dev musl-tools
+COPY . ./
+RUN go get
+
+# Build it statically https://dominik.honnef.co/posts/2015/06/go-musl/
+RUN CC=$(which musl-gcc) go build --ldflags '-linkmode external -extldflags "-static"' -o /o2
+
+
+FROM alpine:latest
+WORKDIR /
+COPY --from=builder /o2 /o2
+ENTRYPOINT ["/o2"]
