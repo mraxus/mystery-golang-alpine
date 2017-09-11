@@ -1,20 +1,35 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
-	"github.com/jmoiron/sqlx"
+
 	_ "github.com/lib/pq"
-	"os"
+)
+
+const (
+	host     = "postgres"
+	port     = 5432
+	user     = "postgres"
+	dbname   = "postgres"
 )
 
 func main() {
-	addr := os.Getenv("DB")
-	fmt.Println("Postgres addr: " + addr)
+	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
+		"dbname=%s sslmode=disable",
+		host, port, user, dbname)
 
-	_, err := sqlx.Connect("postgres", addr)
-
+	fmt.Println("Postgres connecting: " + psqlInfo)
+	db, err := sql.Open("postgres", psqlInfo)
 	if err != nil {
 		fmt.Println("Could not connect...")
+		return
+	}
+	defer db.Close()
+
+	err = db.Ping()
+	if err != nil {
+		fmt.Println("Could not ping...")
 	} else {
 		fmt.Println("Connecting successful")
 	}
