@@ -20,3 +20,4 @@ alpine:
         - postgres
     environment:
         DB: "postgres://postgres@postgres/postgres?sslmode=disable"
+        GODEBUG: "netdns=cgo"
