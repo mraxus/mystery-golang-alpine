@@ -8,6 +8,7 @@ postgres:
 #        - "5432"
 
 build:
+    dns_search: .
     image: mamarcus.org/project:build
     links:
         - postgres
@@ -15,6 +16,7 @@ build:
         DB: "postgres://postgres@postgres/postgres?sslmode=disable"
 
 alpine:
+    dns_search: .
     image: mamarcus.org/project:alpine
     links:
         - postgres
