@@ -8,6 +8,13 @@ Comparing this with just running the same program in *golang:latest* docker base
 Why is this?
 
 
+#### Edit - Mystery solved
+
+*The problem has been solved. The underlying problem, causing this issue was: A DNS search domain was setup in our coorporate network. This domain was passed down to each container, making the alpine name resolver try to resolve the `postgres.xxx.yy` instead of just `postgres`. By excluding the search domain for the containers, the problem has been [resolved in #4](https://github.com/mraxus/mystery-golang-alpine/pull/4).*
+
+*One question still remains, why did the `alpine` container use the search domain when performing it's lookup, and not the standard `golang`?*
+
+
 ### How to reproduce this
 
 #### With rake
